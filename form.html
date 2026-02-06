@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Milton Cricket Community Registration</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+    h1 { color: #1e3a8a; text-align: center; }
+    label { display: block; margin: 10px 0 5px; font-weight: bold; }
+    input, textarea { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    input[required], textarea[required] { border-color: #ef4444; }
+    button { background: #10b981; color: white; padding: 12px; width: 100%; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #059669; }
+    #message { margin-top: 10px; padding: 10px; border-radius: 4px; }
+    .success { background: #d1fae5; color: #065f46; }
+    .error { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body>
+  <h1>🏏 Milton Cricket Community</h1>
+  <p style="text-align: center; color: #6b7280;">Register for Conservation Party (In support of Mr. Parm Gill)</p>
+  <form id="regForm">
+    <label for="fullName">Full Name *</label>
+    <input type="text" id="fullName" name="Full Name" required>
+
+    <label for="address">Full Home Address *</label>
+    <textarea id="address" name="Full Home Address" rows="3" required></textarea>
+
+    <label for="phone">Phone Number *</label>
+    <input type="tel" id="phone" name="Phone Number" required>
+
+    <label for="email">Email ID *</label>
+    <input type="email" id="email" name="Email ID" required>
+
+    <label for="regId">Registration ID *</label>
+    <input type="text" id="regId" name="Registration ID" required>
+
+    <label for="attachments">Attachments (optional)</label>
+    <input type="file" id="attachments" name="Attachments" multiple>
+
+    <button type="submit">Submit Registration</button>
+  </form>
+  <div id="message"></div>
+
+  <script>
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const url = 'https://script.google.com/macros/s/AKfycbyXwqkC0qA5YWi7DjhZrzPUhaka_6mT-swegd2t3E5RmO8TzuqhhdYvAhHSXGDMSyPy/exec';  // Replace with your /exec URL
+      try {
+        const response = await fetch(url, { method: 'POST', body: formData });
+        const result = await response.json();
+        const msg = document.getElementById('message');
+        if (result.result === 'success') {
+          msg.textContent = 'Registration successful! Thank you.';
+          msg.className = 'success';
+          e.target.reset();
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (error) {
+        document.getElementById('message').innerHTML = `Error: ${error.message}`;
+        document.getElementById('message').className = 'error';
+      }
+    });
+  </script>
+</body>
+</html>
